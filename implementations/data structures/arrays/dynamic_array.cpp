@@ -7,6 +7,7 @@ template <class T>
 class dynamic_array {
     T *array;
     int MIN_CAPACITY = INITIAL_CAPACITY;
+    int GROWTH_FACTOR = 2;
     int size;
     
 public:
@@ -27,8 +28,11 @@ public:
     }
     
     void deleteAt(int pos) {
-        // validation missing, if array last position
-        // it has to be a valid index
+        if((pos > size) || (pos < 0)) {
+            cout << "Invalid index";
+            return;
+        }
+
         for(int i = pos; i <= size; i++) {
             array[i] = array[i+1];
         }
@@ -36,7 +40,17 @@ public:
     }
     
     void insertAt(int element, int pos) {
-        array++;
+        if((pos > size) || (pos < 0)) {
+            cout << "Invalid index";
+            return;
+        }
+        
+        if(size == MIN_CAPACITY) {
+            resize();
+        }
+        
+        size++;
+
         for(int i = size - 1; i >= pos; i--) {
             if(i == pos) {
                 array[i] = element;
@@ -59,11 +73,11 @@ public:
     
     // doubles capacity if it has to and deletes reference to current array.
     void resize() {
-        T *temp = new T[MIN_CAPACITY * 2];
+        MIN_CAPACITY *= GROWTH_FACTOR;
+        T *temp = new T[MIN_CAPACITY];
         copy(temp);
         delete [] array;
         array = temp;
-        MIN_CAPACITY *= 2;
         
     }
     
@@ -90,12 +104,10 @@ int main() {
     dynArr.append(4);
     dynArr.append(33);
     dynArr.append(3);
+    
+    dynArr.deleteAt(6);
+    
 
-    cout << dynArr.length() << endl;
-    dynArr.printArray();
-    
-    dynArr.deleteAt(4);
-    
     cout << dynArr.length() << endl;
     
     return 0;
