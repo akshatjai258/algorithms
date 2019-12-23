@@ -1,5 +1,5 @@
 # algorithms :sparkles:
-Here's a compilation of the algorithms I've written so far. You'll find my submissions to online judges, challenges and courses I've completed, implementations of a few algorithms and data structures and yada yada. Mostly C++ and Swift, casually a wild Python might come up :snake:.
+Here's a compilation of the algorithms I've written so far. You'll find my submissions to online judges, challenges and courses I've completed, implementations of a few algorithms and data structures and yada yada. These algorithms are written mostly in C++ and Swift, casually a wild Python might appear :snake:.
 
 ## contents
 ### implementations :construction:
