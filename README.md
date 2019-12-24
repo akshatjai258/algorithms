@@ -6,6 +6,7 @@ Here's a compilation of the algorithms I've written so far. You'll find my submi
 * **[data structures](https://github.com/lareenmelo/algorithms/tree/master/implementations/data%20structures)**
 ### solutions :ballot_box_with_check:
 * **[hackerrank](https://github.com/lareenmelo/algorithms/tree/master/solutions/hackerrank)**
+* **[leetcode](https://github.com/lareenmelo/algorithms/tree/master/solutions/leetcode)**
 ### events && challenges :trophy:
 ### tutorials && courses :notebook_with_decorative_cover:
 * **hackerrank**
