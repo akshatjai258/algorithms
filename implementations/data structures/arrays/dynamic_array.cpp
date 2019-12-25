@@ -1,96 +1,78 @@
 #include <iostream>
 
 using namespace std;
-#define INITIAL_CAPACITY 5
+
+const int INITIAL_CAPACITY = 5;
+const int GROWTH_FACTOR = 2;
 
 template <class T>
 class dynamic_array {
     T *array;
-    int MIN_CAPACITY = INITIAL_CAPACITY;
-    int GROWTH_FACTOR = 2;
-    int size;
+    int capacity = INITIAL_CAPACITY;
+    int _size;
     
 public:
-    // constructor init
     dynamic_array() {
         array = new T[MIN_CAPACITY];
         size = 0;
     }
     
-    // append @ the end
-    void append(T element) {
-        if(size == MIN_CAPACITY) {
-            resize();
-        }
-        array[size] = element;
-        size++;
-        
+    ~dynamic_array() {
+        delete[] array;
     }
     
-    void deleteAt(int pos) {
-        if((pos > size) || (pos < 0)) {
-            cout << "Invalid index";
-            return;
-        }
-
+    void delete_at(int pos) {
+        assert(0 <= pos && pos < _size);
+        
+        size--;
         for(int i = pos; i <= size; i++) {
             array[i] = array[i+1];
         }
-        size--;
     }
     
-    void insertAt(int element, int pos) {
-        if((pos > size) || (pos < 0)) {
-            cout << "Invalid index";
-            return;
-        }
-        
-        if(size == MIN_CAPACITY) {
+    void insert_at(int element, int pos) {
+        assert(0 <= pos && pos <= _size);
+        if(_size == capacity) {
             resize();
         }
-        
-        size++;
+        for(int i = _size; i > pos; i--) {
+            array[i] = array[i-1];
+        }
+        _size++;
+        array[pos] = element;
+    }
 
-        for(int i = size - 1; i >= pos; i--) {
-            if(i == pos) {
-                array[i] = element;
-            } else {
-                array[i] = array[i-1];
-            }
-        }
+    
+    void append(T element) {
+        insert_at(element, _size);
     }
     
-    void printArray() {
-        for(int i = 0; i < length(); i++) {
-            cout << array[i];
-        }
-    }
-    
-    // returns size of array
-    int length() {
-        return size;
+    int size() {
+        return _size;
     }
     
     // doubles capacity if it has to and deletes reference to current array.
-    void resize() {
-        MIN_CAPACITY *= GROWTH_FACTOR;
-        T *temp = new T[MIN_CAPACITY];
-        copy(temp);
+    void resize() {    void resize() {
+        capacity *= GROWTH_FACTOR;
+        T *temp = new T[capacity];
+        copy(array, array + _size, temp);
         delete [] array;
         array = temp;
-        
     }
     
-    // copies original array into temp
-    void copy(T temp[]) {
-        for(int i = 0; i < size; i++) {
-            temp[i] = array[i];
-        }
-    }
-    
-    // returns element in x position.
     T get(int pos) {
         return array[pos];
+    }
+    
+    void print() {
+        cout << "[";
+        for (int i = 0; i < _size - 1; i++) {
+            cout << array[i] << " ";
+        }
+        if (_size) {
+            cout << array[_size - 1];
+        }
+        cout << "]\n";
     }
 };
 
@@ -105,10 +87,10 @@ int main() {
     dynArr.append(33);
     dynArr.append(3);
     
-    dynArr.deleteAt(6);
+    dynArr.delete_at(6);
     
 
-    cout << dynArr.length() << endl;
+    cout << dynArr.size() << endl;
     
     return 0;
 }
