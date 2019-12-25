@@ -11,4 +11,5 @@ Here's a compilation of the algorithms I've written so far. You'll find my submi
 ### tutorials && courses :notebook_with_decorative_cover:
 * **hackerrank**
   * *[30 days of code](https://github.com/lareenmelo/algorithms/tree/master/solutions/hackerrank/tutorials/30-days-of-code)*
+  * *[interview preparation kit](https://github.com/lareenmelo/algorithms/tree/master/solutions/hackerrank/tutorials/interview-preparation-kit)*
 ### contests :chart_with_upwards_trend: 
