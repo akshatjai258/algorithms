@@ -4,8 +4,9 @@
 
 using namespace std;
 
-const int INITIAL_CAPACITY = 2;
+const int INITIAL_CAPACITY = 5;
 const int GROWTH_FACTOR = 2;
+const int LOAD_FACTOR = 0.8;
 
 template <class T>
 class dynamic_array {
@@ -33,7 +34,7 @@ public:
 
     void insertAt(int element, int pos) {
         assert(0 <= pos && pos <= _size);
-        if(_size == capacity) {
+        if((float)_size/(float)capacity == LOAD_FACTOR) {
             resize();
         }
         for(int i = _size; i > pos; i--) {
