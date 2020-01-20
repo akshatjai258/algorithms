@@ -24,7 +24,7 @@ class LinkedList<T> {
     init() {
         count = 0
     }
-        
+    
     /// inserts new node at the last of linked list
     func append(_ value: T) {
         var current = head
@@ -49,19 +49,24 @@ class LinkedList<T> {
         var current = head
         let newNode = Node(value)
         var pos = position
-                
-        assert(position >= 0, "Invalid Index")
+        
+        assert(position >= 0, "Invalid index")
         
         if position == 0 {
-            newNode.next = current
-            head = newNode
+            if current == nil {
+                head = newNode
+            } else {
+                newNode.next = current
+                head = newNode
+            }
             count += 1
+            
         } else if position == count - 1 {
             append(value)
             
         } else {
-            assert(position < count, "Invalid Index")
-
+            assert(position < count, "Invalid index")
+            
             while current != nil && pos > 1 {
                 current = current?.next
                 pos -= 1;
@@ -69,7 +74,7 @@ class LinkedList<T> {
             
             newNode.next = current?.next
             current?.next = newNode
-
+            
             count += 1
         }
     }
@@ -82,7 +87,7 @@ class LinkedList<T> {
         
         if current?.next == nil {
             head = nil
-
+            
         } else {
             var predecessor: Node<T>?
             while current?.next != nil {
@@ -99,9 +104,42 @@ class LinkedList<T> {
     
     /// removes nodes from specified position, "shifting" the rest of the elements to the left.
     func removeNode(at position: Int) {
+        assert(position >= 0, "Invalid index")
+        var current = head
+        var pos = position
         
+        assert(current != nil, "There are no nodes to delete")
+        
+        if position == 0 {
+            if current?.next == nil {
+                head = nil
+            } else {
+                head = current?.next
+                current = nil
+            }
+            
+            count -= 1
+        } else if position == count - 1 {
+            remove()
+            
+        } else {
+            assert(position < count, "Invalid index")
+            var predecessor: Node<T>?
+
+            while current != nil && pos > 0 {
+                predecessor = current
+                current = current?.next
+                pos -= 1
+            }
+            
+            predecessor?.next = current?.next
+            current?.next = nil
+            current = nil
+            
+            count -= 1
+        }
     }
-        
+    
     func prettyPrint() {
         var current = head
         var list = ""
@@ -114,7 +152,7 @@ class LinkedList<T> {
             }
             
             current = current?.next
-
+            
         }
         
         print(list)
@@ -123,12 +161,12 @@ class LinkedList<T> {
 
 
 let list = LinkedList<Int>()
+list.insert(1, at: 0)
+list.insert(2, at: 0)
 list.append(1)
 list.append(2)
 list.append(3)
-list.remove()
-list.remove()
-list.remove()
 list.insert(8, at: 0)
 list.append(11)
+list.removeNode(at: 0)
 list.prettyPrint()
