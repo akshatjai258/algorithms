@@ -101,17 +101,23 @@ class LinkedList<T> {
     func removeNode(at position: Int) {
         
     }
-    
-    
-    // FIXME: add pretty priting prettily
-    func prettyPrint() {
-        var currentNode = head
         
-        while currentNode != nil {
-            print(currentNode!.value)
-            currentNode = currentNode?.next
-            //            print(currentNode?.value)
+    func prettyPrint() {
+        var current = head
+        var list = ""
+        
+        while current != nil {
+            if current?.next == nil {
+                list += "\(current!.value)"
+            } else {
+                list += "\(current!.value)->"
+            }
+            
+            current = current?.next
+
         }
+        
+        print(list)
     }
 }
 
@@ -125,6 +131,4 @@ list.remove()
 list.remove()
 list.insert(8, at: 0)
 list.append(11)
-
-
 list.prettyPrint()
