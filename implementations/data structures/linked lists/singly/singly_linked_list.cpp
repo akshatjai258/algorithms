@@ -20,114 +20,180 @@ struct Node {
 template <class T>
 class LinkedList {
     Node<T> *head;
+    int size;
     
 public:
     LinkedList() {
-        head = NULL;
+        head = nullptr;
+        size = 0;
     }
     
+    /// prints node in specified position
     void peek(int position) {
+        // FIXME: invalid index
         Node<T> *current_node = head;
         
-        while (current_node != NULL && position--) {
+        assert(position < size || position > 0);
+        
+        
+        while (current_node != nullptr && position--) {
             current_node = current_node->next;
         }
         
         std::cout << current_node->data << std::endl;
     }
     
-
-    void insert(T value, int position) {
+    /// Inserts new node at the end of list.
+    void insert(T value) {
+        int _size = size;
         Node<T> *current_node = head;
-        
         Node<T> *new_node = new Node<T>;
-        new_node->data = value;
-        new_node->next = NULL;
         
-        if (head == NULL) {
+        new_node->data = value;
+        new_node->next = nullptr;
+        
+        if(current_node == nullptr) {
             head = new_node;
+            delete current_node;
+            
+        } else {
+            while(current_node != nullptr && _size > 1) {
+                current_node = current_node->next;
+                _size--;
+                
+            }
+            
+            assert(current_node != nullptr);
+            current_node->next = new_node;
+        }
+        
+        size++;
+    }
+    
+    
+    // fix strange insert
+    void insert_at(T value, int position) {
+        Node<T> *current_node = head;
+        Node<T> *new_node = new Node<T>;
+        
+        new_node->data = value;
+        new_node->next = nullptr;
+        
+        if(current_node == nullptr) {
+            head = new_node;
+            size++;
         } else {
             if (position == 0) {
                 new_node->next = head;
                 head = new_node;
+                size++;
                 
             } else {
+                assert(position <= size || position >= 0);
                 
-                while (current_node != NULL && position > 1) {
-                    current_node = current_node->next;
-                    position--;
-                }
-                
-                if (current_node == NULL) {
-                    assert(current_node != NULL);
-                    
-                } else if (current_node->next == NULL) {
-                    //FIXME: tail reference?
-                    current_node->next = new_node;
+                if (position == size) {
+                    insert(value);
                     
                 } else {
+                    while(current_node != nullptr && position > 1) {
+                        current_node = current_node->next;
+                        position--;
+                    }
+                    
                     new_node->next = current_node->next;
                     current_node->next = new_node;
-                    
+                    size++;
                 }
             }
         }
     }
     
-    void remove(int position) {
+    /// removes node at specified position.
+    void remove_at(int position) {
+        Node<T> *current_node = head;
+        Node<T> *predecessor_node = nullptr;
         
-        if(head == NULL) {
-            // There are no nodes to delete
-            assert(head != NULL);
+        if (current_node == nullptr) {
+            assert(current_node != nullptr);
+            delete current_node;
+            delete predecessor_node;
+            
+        }
+        
+        assert(position < size || position >= 0);
+        
+        if(position == size - 1) {
+            remove();
+            
+        } else if(position == 0) {
+            head = current_node->next;
+            delete current_node;
+            current_node = nullptr;
+            size--;
             
         } else {
-            Node<T> *current_node = head;
-            
-            if(current_node->next == NULL) {
-                head = NULL;
-                free(current_node);
-                current_node = NULL;
+            while(current_node != nullptr && position > 0) {
+                predecessor_node = current_node;
+                current_node = current_node->next;
+                position--;
                 
-            } else {
-                if(position == 0) {
-                    head = current_node->next;
-                    free(current_node);
-                    current_node = NULL;
-                    
-                } else {
-                    Node<T> *predecessor_node = NULL;
-
-                    while(current_node != NULL && position >= 1) {
-                        predecessor_node = current_node;
-                        current_node = current_node->next;
-                        position--;
-                    }
-                    
-                    if(current_node->next == NULL) {
-                        predecessor_node->next = NULL;
-                        free(current_node);
-                        current_node = NULL;
-
-                    } else if(current_node == NULL){
-                        assert(current_node != NULL);
-
-                    } else {
-                        predecessor_node->next = current_node->next;
-                        free(current_node);
-                        current_node->next = NULL;
-                        
-                    }
-                    
-                }
             }
+            
+            predecessor_node->next = current_node->next;
+            current_node->next = nullptr;
+            delete current_node;
+            current_node = nullptr;
+            
+            size--;
+            
         }
+    }
+    
+    /// removes last node of list.
+    void remove() {
+        Node<T> *current_node = head;
+        Node<T> *predecessor_node = nullptr;
+        int _size = size;
+        
+        if (current_node == nullptr) {
+            assert(current_node != nullptr);
+            delete current_node;
+            delete predecessor_node;
+            
+        }
+        
+        if (current_node->next == nullptr) {
+            head = nullptr;
+            delete current_node;
+            current_node = nullptr;
+            
+        } else {
+            while (current_node != nullptr && _size > 1) {
+                predecessor_node = current_node;
+                current_node = current_node->next;
+                _size--;
+            }
+            
+            
+            predecessor_node->next = nullptr;
+            delete current_node;
+            current_node = nullptr;
+            
+        }
+        
+        size--;
+        
     }
     
     void pretty_printing() {
         Node<T> *current_node = head;
         
-        while(current_node != NULL) {
-            if(current_node->next == NULL) {
+        if (current_node == nullptr) {
+            std::cout << "LIST IS EMPTY" << std::endl;
+        }
+        
+        while(current_node != nullptr) {
+            if(current_node->next == nullptr) {
                 std::cout << current_node->data << std::endl;
             } else {
                 std::cout << current_node->data << "->";
@@ -140,22 +206,17 @@ public:
 
 int main(int argc, const char * argv[]) {
     LinkedList<int> list;
-    
-    list.insert(3, 0);
-    list.insert(5, 1);
-    list.insert(2, 1);
-    list.insert(4, 2);
-    list.insert(7, 2);
-    list.insert(8, 4);
-    list.remove(1);
-    list.remove(1);
-    list.remove(1);
-    list.peek(0);
-  
+    list.insert_at(1, 0);
+    list.insert_at(2, 1);
+    list.insert_at(3, 2);
+    list.insert_at(4, 3);
+    list.insert_at(5, 2);
+    list.insert(10);
+    list.insert_at(8, 2);
+    list.peek(4);
+    list.remove_at(5);
+    list.remove();
     list.pretty_printing();
     std::cout << std::endl;
     return 0;
 }
-
-
-// free vs. delete?
