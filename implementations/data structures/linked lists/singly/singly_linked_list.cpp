@@ -30,11 +30,9 @@ public:
     
     /// prints node in specified position
     void peek(int position) {
-        // FIXME: invalid index
         Node<T> *current_node = head;
         
         assert(position < size || position > 0);
-        
         
         while (current_node != nullptr && position--) {
             current_node = current_node->next;
@@ -70,8 +68,7 @@ public:
         size++;
     }
     
-    
-    // fix strange insert
+    /// inserts at specific position, it pushes the element at position to the right and replaces the position with the new value
     void insert_at(T value, int position) {
         Node<T> *current_node = head;
         Node<T> *new_node = new Node<T>;
@@ -173,7 +170,6 @@ public:
                 current_node = current_node->next;
                 _size--;
             }
-            
             
             predecessor_node->next = nullptr;
             delete current_node;
