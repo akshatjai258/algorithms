@@ -26,6 +26,7 @@ public:
     }
     
     int count() {
+        //FIXME: missing validations
         int count = 0;
         
         Node<T> *current_node = head;
