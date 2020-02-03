@@ -18,63 +18,71 @@ struct Node {
 template <class T>
 class CircularLinkedList {
     Node<T> *head;
+    Node<T> *tail;
     
 public:
     CircularLinkedList() {
         head = nullptr;
+        tail = nullptr;
     }
     
     void append(T value) {
-        Node<T> *current = head;
         Node<T> *new_node = new Node<T>;
+        
         new_node->value = value;
         new_node->next = head;
         
-        if (current == nullptr) {
+        if (head == nullptr) {
             head = new_node;
+            tail = new_node;
             new_node->next = head;
-            delete current;
-            current = nullptr;
             
         } else {
-            while (current->next != head) {
-                current = current->next;
-            }
+            Node<T> *current = tail;
             
             current->next = new_node;
+            tail = new_node;
             
         }
     }
     
     void remove() {
-        Node<T> *current = head;
+        assert(head != nullptr);
         
-        assert(current != nullptr);
-        
-        if (current->next == head) {
+        if (head == tail) {
             head = nullptr;
-            delete current;
-            current = nullptr;
+            tail = nullptr;
+            
         } else {
             Node<T> *previous = nullptr;
+            Node<T> *current = head;
+
+            
             while (current->next != head) {
                 previous = current;
                 current = current->next;
-                
             }
-            
-            // current now is the last node
             current->next = nullptr;
             previous->next = head;
+            
+            tail = previous;
+            
             delete current;
             current = nullptr;
             
+            
         }
     }
+
     
+    // prints list references, last element's reference is first
     void print() {
         Node<T> *current = head;
         
+        if (current == nullptr) {
+            std::cout << "emtpy list" << std::endl;
+        }
+
         do {
             if (current->next == head) {
                 std::cout << current->value << std::endl;
@@ -96,6 +104,11 @@ int main() {
     circular_list.append(4);
     circular_list.append(5);
 
+    circular_list.remove();
+    circular_list.remove();
+    circular_list.remove();
+    circular_list.remove();
+    circular_list.remove();
     circular_list.remove();
 
     circular_list.print();
