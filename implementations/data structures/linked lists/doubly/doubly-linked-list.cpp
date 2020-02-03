@@ -20,25 +20,14 @@ template <class T>
 class DoublyLinkedList {
     Node<T> *head;
     Node<T> *tail;
+    int size;
     
 public:
     DoublyLinkedList() {
         head = nullptr;
         tail = nullptr;
-    }
-    
-    int count() {
-        //FIXME: missing validations
-        int count = 0;
+        size = 0;
         
-        Node<T> *current_node = head;
-        
-        while (current_node != nullptr) {
-            current_node = current_node->next;
-            count++;
-        }
-        
-        return count;
     }
     
     void append(T value) {
@@ -60,10 +49,11 @@ public:
             tail = new_node;
 
         }
+        
+        size++;
     }
     
     void insert_at(int position, T value) {
-        int number_of_nodes = count();
         Node<T> *current_node = head;
         
         Node<T> *new_node = new Node<T>;
@@ -77,6 +67,7 @@ public:
         if (position == 0) {
             if (current_node == nullptr) {
                 head = new_node;
+                tail = new_node;
                 delete current_node;
                 current_node = nullptr;
                 
@@ -85,13 +76,14 @@ public:
                 current_node->previous = new_node;
                 head = new_node;
             }
+            size++;
             
-        } else if (position == number_of_nodes) {
+        } else if (position == size) {
             append(value);
             
         } else {
             // index needs the be smaller than number of nodes.
-            assert(position < number_of_nodes);
+            assert(position < size);
             
             while (current_node->next != nullptr && position--) {
                 current_node = current_node->next;
@@ -104,6 +96,7 @@ public:
             
             new_node->next = current_node;
             new_node->previous = previous_node;
+            size++;
         }
     }
     
@@ -125,22 +118,24 @@ public:
             current_node = nullptr;
             
         }
+        
+        size--;
     }
     
     void remove_at(int position) {
-        int number_of_nodes = count();
         Node<T> *current_node = head;
         
         // position needs to be greater or equal than 0 (valid index)
         assert(position >= 0);
         
-        if (position == number_of_nodes - 1) {
+        if (position == size - 1) {
             remove();
             
         } else if (position == 0) {
             
             if (current_node->next == nullptr) {
                 head = nullptr;
+                tail = nullptr;
                 delete current_node;
                 current_node = nullptr;
                 
@@ -153,10 +148,11 @@ public:
                 
                 current_node = nullptr;
             }
+            size--;
             
         } else {
             // index needs the be smaller than number of nodes.
-            assert(position < number_of_nodes);
+            assert(position < size);
             
             while (current_node->next != nullptr && position--) {
                 current_node = current_node->next;
@@ -174,6 +170,8 @@ public:
             delete current_node;
             
             current_node = nullptr;
+            
+            size--;
             
         }
     }
