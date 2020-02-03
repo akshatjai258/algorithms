@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  circular_s_linked_list
+//  circular_d_linked_list
 //
-//  Created by Lareen Melo on 1/27/20.
+//  Created by Lareen Melo on 2/3/20.
 //  Copyright © 2020 Lareen Melo. All rights reserved.
 //
 
@@ -13,6 +13,7 @@ template <class T>
 struct Node {
     T value;
     Node *next;
+    Node *previous;
 };
 
 template <class T>
@@ -31,17 +32,21 @@ public:
         
         new_node->value = value;
         new_node->next = head;
+        new_node->previous = nullptr;
         
         if (head == nullptr) {
             head = new_node;
             tail = new_node;
             new_node->next = head;
+            new_node->previous = tail;
             
         } else {
             Node<T> *current = tail;
             
             current->next = new_node;
+            new_node->previous = current;
             tail = new_node;
+            head->previous = tail;
             
         }
     }
@@ -54,22 +59,18 @@ public:
             tail = nullptr;
             
         } else {
-            Node<T> *previous = nullptr;
-            Node<T> *current = head;
-
+            Node<T> *current = tail;
+            Node<T> *previous = current->previous;
             
-            while (current->next != head) {
-                previous = current;
-                current = current->next;
-            }
-            current->next = nullptr;
             previous->next = head;
-            
             tail = previous;
+            current->next->previous = tail;
+            
+            current->previous = nullptr;
+            current->next = nullptr;
             
             delete current;
             current = nullptr;
-            
             
         }
     }
@@ -86,6 +87,7 @@ public:
         do {
             if (current->next == head) {
                 std::cout << current->value << std::endl;
+                
             } else {
                 std::cout << current->value << "->";
             }
@@ -108,8 +110,8 @@ int main() {
     circular_list.remove();
     circular_list.remove();
     circular_list.remove();
-    circular_list.remove();
-    circular_list.remove();
+//    circular_list.remove();
+//    circular_list.remove();
 
     circular_list.print();
     return 0;
