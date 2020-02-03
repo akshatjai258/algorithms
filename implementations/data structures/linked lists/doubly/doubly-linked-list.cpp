@@ -19,10 +19,12 @@ struct Node {
 template <class T>
 class DoublyLinkedList {
     Node<T> *head;
+    Node<T> *tail;
     
 public:
     DoublyLinkedList() {
         head = nullptr;
+        tail = nullptr;
     }
     
     int count() {
@@ -40,27 +42,27 @@ public:
     }
     
     void append(T value) {
-        Node<T> *current_node = head;
-        
         Node<T> *new_node = new Node<T>;
         new_node->value = value;
         new_node->previous = nullptr;
         new_node->next = nullptr;
         
-        if (current_node == nullptr) {
+        if (head == nullptr) {
             head = new_node;
-            delete current_node;
+            tail = new_node;
+            
         } else {
-            while (current_node->next != nullptr) {
-                current_node = current_node->next;
-            }
+            Node<T> *current_node = tail;
             
             current_node->next = new_node;
             new_node->previous = current_node;
+            
+            tail = new_node;
+
         }
     }
     
-    void insert_at(T value, int position) {
+    void insert_at(int position, T value) {
         int number_of_nodes = count();
         Node<T> *current_node = head;
         
@@ -106,28 +108,22 @@ public:
     }
     
     void remove() {
-        Node<T> *current_node = head;
-        
         // "There are no elements to delete"
-        assert(current_node != nullptr);
+        assert(head != nullptr);
         
-        while (current_node->next != nullptr) {
-            current_node = current_node->next;
-            
-        }
-        
-        if (current_node->previous == nullptr) {
+        if (head == tail) {
             head = nullptr;
-            delete current_node;
-            current_node = nullptr;
-            
+            tail = nullptr;
         } else {
+            Node<T> *current_node = tail;
+
             current_node->previous->next = nullptr;
+            tail = current_node->previous;
             current_node->previous = nullptr;
             
             delete current_node;
-            
             current_node = nullptr;
+            
         }
     }
     
@@ -203,7 +199,20 @@ int main() {
     
     list.append(1);
     list.append(3);
-    list.insert_at(2, 1);
+    list.insert_at(1, 2);
+    list.append(4);
+    list.append(5);
+    
+    list.remove();
+    list.remove();
+    list.remove();
+    list.remove();
+    list.remove();
+
+
+    list.append(1);
+
+
     
     list.print();
 }
