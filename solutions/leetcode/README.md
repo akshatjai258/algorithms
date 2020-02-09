@@ -2,6 +2,7 @@
 
 Name               | Number  | Difficulty | Tags | Language
 :---               |  :---:  |   :---:    |  :---:|:---:
+*[Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)* | 206 | Easy | Linked List | [C++](https://github.com/lareenmelo/algorithms/blob/master/solutions/leetcode/206.cpp)|
 *[Reverse String](https://leetcode.com/problems/reverse-string/)* | 344 | Easy | Two Pointers, String | [C++](https://github.com/lareenmelo/algorithms/blob/master/solutions/leetcode/344.cpp)
 *[Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/)* | 657 | Easy | String | [C++](https://github.com/lareenmelo/algorithms/blob/master/solutions/leetcode/657.cpp)
 *[To Lower Case](https://leetcode.com/problems/to-lower-case/)* | 709 | Easy | String | [C++](https://github.com/lareenmelo/algorithms/blob/master/solutions/leetcode/709.cpp)
