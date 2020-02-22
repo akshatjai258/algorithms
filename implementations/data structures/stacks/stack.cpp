@@ -54,14 +54,11 @@ public:
     }
     
     void print_stack() {
-        for (int i = 0; i < (top + 1); i++) {
-            std::cout << s[i] << std::endl;
+        for (int i = top; i >= 0; i--) {
+            std::cout << "|  " << s[i] << "  |" << std::endl;
         }
-        
-        // TODO: really pretty print. like bucket :b
     }
 };
-
 
 
 int main() {
@@ -81,7 +78,6 @@ int main() {
     my_stack.peek();
 
     my_stack.print_stack();
-    
     
     std::cout << my_stack.size() << std::endl;
     return 0;
